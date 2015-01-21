@@ -1,1 +1,1 @@
-this project if for battery management system!
+this project is used for battery management system!
