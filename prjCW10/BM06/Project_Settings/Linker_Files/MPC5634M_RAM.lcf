@@ -1,0 +1,98 @@
+/* Internal RAM linker command file for MPC5634M                            */
+/*                                                                          */
+/*               1.5MB Flash, 94KB SRAM                                     */
+/*                                                                          */
+/* Intended to be used for the stationary example project.                  */
+/*                                                                          */
+/* VERSION: 1.1                                                             */
+
+MEMORY
+{
+    /* SRAM: 0x40000000 - 0x400177FF */
+    
+    /* Contains interrupt branch tables for both Z3 core and INTC module
+     and the ISR handlers code. Note, since the vector base address field
+     of Z3 IVPR is defined within the range [0:15] the branch tables must
+     be loaded at an address aligned to 64K boundary, for eg. 0x4000_0000.
+     */    
+    exception_handlers: org = 0x40000000,   len = 0x00001000    /* 4K */
+
+    /* Space allocated for both code and variables in order to use the memory
+    more efficiently.*/
+    internal_ram:       org = 0x40001000,   len = 0x00014800 /* 82K */
+    heap:               org = 0x40015800,   len = 0x00001000 /* 4K Heap */
+    stack:              org = 0x40016800,   len = 0x00001000 /* 4K Stack */
+}
+
+SECTIONS
+{
+    /* z3 IVORxx and INTC branch tables */
+    GROUP : {
+        /* Special section for INTC branch table required in hardware mode.
+        Place the .intc_hw_branch_table section first in order to used both core and INTC
+        tables. The intc_hw_branch_table should contain entries aligned to 16 bytes.
+         */
+        .intc_hw_branch_table (VLECODE)  ALIGN (0x10) : {}
+        
+        /* Because the Z3 IVORx are settable the IVOR branch table can be placed
+        after the INTC HW table.*/
+        .ivor_branch_table (VLECODE)  ALIGN (0x10) : {}
+        
+        /* ISR handlers code. */
+        .__exception_handlers  (VLECODE)  : {}
+                
+    } > exception_handlers
+
+    GROUP : {
+        /* Section used for initialization code: __ppc_eabi_init.c,
+        MPC56xx_HWInit.c, MPC56xx_init_*.c and the entry point (__startup).
+        */
+        .init : {}
+        .init_vle (VLECODE) : {
+            *(.init)
+            *(.init_vle)
+        }
+
+        .text (TEXT) : {}
+        .text_vle (VLECODE) : {
+             *(.text)
+             *(.text_vle)
+         }
+
+        .rodata (CONST) : {
+            *(.rdata)
+            *(.rodata)
+        }
+
+        .ctors : {}
+        .dtors : {}
+        extab : {}
+        extabindex : {}
+    } > internal_ram
+
+    GROUP : {
+        /* Used in INTC SW mode to store the interrupt handlers array. Should be aligned to 2K. */
+       .__uninitialized_intc_handlertable ALIGN(0x800) : {}
+       .data   : {}
+       .sdata  : {}
+       .sbss   : {}
+       .sdata2 : {}
+       .sbss2  : {}
+       .bss    : {}
+    } > internal_ram
+
+}
+/* Freescale CodeWarrior compiler address designations */
+_stack_addr = ADDR(stack)+SIZEOF(stack);
+_stack_end  = ADDR(stack);
+_heap_addr  = ADDR(heap);
+_heap_end   = ADDR(heap)+SIZEOF(heap);
+
+/* If INTC HW mode is used it represents the vector base address to set
+IVPR and the location of intc_hw_branch_table section. The EXCEPTION_HANDLERS
+will point to the IVOR branch table.
+*/
+__IVPR_VALUE = ADDR(exception_handlers);
+
+/* IVOR branch table location. Used in Exceptions.c */
+EXCEPTION_HANDLERS = ADDR(.ivor_branch_table);

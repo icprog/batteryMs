@@ -1,0 +1,82 @@
+"./Master/app/banlance_battery/banlancebattery_c.obj"
+"./Master/app/ctl/relay_c.obj"
+"./Master/app/ctl/control_c.obj"
+"./Master/app/ctl/charge_c.obj"
+"./Master/app/ctl/ColdHeatManager_c.obj"
+"./Master/app/current/currentAbstract_c.obj"
+"./Master/app/current/current_c.obj"
+"./Master/app/insulation_resistance/insulation_resistance_c.obj"
+"./Master/app/mgclib/mgcstring_c.obj"
+"./Master/app/mgclib/mgcprintf_c.obj"
+"./Master/app/mgclib/mgcfifo_c.obj"
+"./Master/app/middleLayer/simulateDrivers_c.obj"
+"./Master/app/middleLayer/appToDriver_c.obj"
+"./Master/app/protocol/vcu_protocol_c.obj"
+"./Master/app/protocol/uart_protocol_c.obj"
+"./Master/app/protocol/cpcu_protocol_c.obj"
+"./Master/app/protocol/accp_protocol_c.obj"
+"./Master/app/public/systemState_c.obj"
+"./Master/app/public/public_c.obj"
+"./Master/app/public/ParameterManager_c.obj"
+"./Master/app/selftest/selftest_c.obj"
+"./Master/app/soc/soc/look1_iflf_binlg_c.obj"
+"./Master/app/soc/soc/const_params_c.obj"
+"./Master/app/soc/soc/Closed_Loop_NCM_29Ah_change_c.obj"
+"./Master/app/soc/soc_c.obj"
+"./Master/app/soh/sohProcess_c.obj"
+"./Master/app/soh/mul_wide_su32_c.obj"
+"./Master/app/soh/mul_s32_s32_u32_sat_c.obj"
+"./Master/app/soh/div_s32_sat_c.obj"
+"./Master/app/soh/SOH_c.obj"
+"./Master/app/temp/temperature_c.obj"
+"./Master/app/voltage/voltage_c.obj"
+"./Master/driver/CAN/can_c.obj"
+"./Master/driver/Gpio/gpio_events_c.obj"
+"./Master/driver/Gpio/gpioFuncs_c.obj"
+"./Master/driver/Gpio/gpio_c.obj"
+"./Master/driver/LTC68042/ltc6804_c.obj"
+"./Master/driver/adc/adc_c.obj"
+"./Master/driver/eprom/eprom_c.obj"
+"./Master/driver/intc/intc_c.obj"
+"./Master/driver/pll/pll_c.obj"
+"./Master/driver/rtc/rtc_c.obj"
+"./Master/driver/spi/spi_simulator_c.obj"
+"./Master/driver/spi/spi_c.obj"
+"./Master/driver/timer/timer_c.obj"
+"./Master/driver/uart/uart_c.obj"
+"./Project_Settings/Startup_Code/__ppc_eabi_init_c.obj"
+"./Project_Settings/Startup_Code/MPC5634M_init_ram_c.obj"
+"./Project_Settings/Startup_Code/MPC5634M_Startup_c.obj"
+"./Project_Settings/Startup_Code/MPC5634M_HWInit_c.obj"
+"./Sources/main_c.obj"
+"./Sources/ivor_branch_table_c.obj"
+"./Sources/IntcInterrupts_c.obj"
+"./Sources/Exceptions_c.obj"
+-sym dwarf-2
+-sym full
+-msgstyle parseable
+-proc zen
+-big
+-fp spfp
+-model absolute
+-abi eabi
+-sdata 8
+-sdata2 8
+-nostdlib
+-lcf
+"$(ProjDirPath)/Project_Settings/Linker_Files/MPC5634M_RAM.lcf"
+-m __startup
+-L"$(MCUToolsBaseDirEnv)/PA_Support/ewl/lib"
+-char unsigned
+-application
+-heapsize 32
+-stacksize 32
+-map
+-listclosure
+-mapunused
+-genbinary none
+-srec
+-sreclength 26
+-sreceol dos 
+-l"$(MCUToolsBaseDirEnv)/PA_Support/ewl/lib/libc_E200z335_VLE.a"
+-l"$(MCUToolsBaseDirEnv)/PA_Support/ewl/lib/librt_E200z335_VLE.a"
